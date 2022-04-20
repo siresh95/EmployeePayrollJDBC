@@ -30,9 +30,9 @@ public class DatabaseConnection {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/payroll_service";
+        String url = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";;
         String uname = "root";
-        String pass = "Deven#7818";
+        String pass = "Resh@308";
 
         System.out.println("Connecting to database : " + url);
         Connection con = DriverManager.getConnection(url, uname, pass);

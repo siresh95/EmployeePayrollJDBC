@@ -8,7 +8,11 @@ import java.util.Scanner;
 /**
  * 1.Create database connection using JDBC
  * 2.Retrieve Data from database
- * 3.Update employee salary in databse
+ * 3.Update employee salary in database
+ * 4.Update employee salary in database using prepared statement
+ * 5.Cache the PreparedStatement at the Driver and DB Level
+ *   Make Payroll DB Service Object as Singleton so PreparedStatement is catch the program
+ *    Reuse the ResultSet to populate EmployeePayrollData Object
  * @author Asus
  *
  */
@@ -114,8 +118,7 @@ public class PayrollService {
         PayrollData employeePayrollData;
         employeePayrollData = this.employeePayrollList.stream()
                 .filter(employeePayrollDataItem -> employeePayrollDataItem.name.equals(name))
-                .findFirst()
-                .orElse(null);
+                .findFirst().orElse(null);
         return employeePayrollData;
     }
 
