@@ -1,6 +1,5 @@
 package com.bridgelabz.jdbc;
 
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,6 +9,7 @@ public class PayrollData {
     String name;
     double salary;
     private LocalDate start;
+
 
     /**
      * parameterized constructor

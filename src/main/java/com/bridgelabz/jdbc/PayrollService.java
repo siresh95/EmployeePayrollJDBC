@@ -1,8 +1,10 @@
 package com.bridgelabz.jdbc;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -11,8 +13,10 @@ import java.util.Scanner;
  * 3.Update employee salary in database
  * 4.Update employee salary in database using prepared statement
  * 5.Cache the PreparedStatement at the Driver and DB Level
- *   Make Payroll DB Service Object as Singleton so PreparedStatement is catch the program
+ *    Make Payroll DB Service Object as Singleton so PreparedStatement is catch the program
  *    Reuse the ResultSet to populate EmployeePayrollData Object
+ * 6.Find sum, average, min, max, and number of male and female employees
+ *
  * @author Asus
  *
  */
@@ -22,6 +26,7 @@ public class PayrollService {
     }
 
     private DatabaseConnection databaseConnection;
+
     /*
      * Welcome Message
      */
@@ -42,6 +47,9 @@ public class PayrollService {
         databaseConnection = DatabaseConnection.getInstance();
     }
 
+    /**
+     * main method
+     */
     public static void main(String[] args) {
         ArrayList<PayrollData> employeePayrollList = new ArrayList<>();
         PayrollService employeePayrollService = new PayrollService(employeePayrollList);
@@ -83,6 +91,7 @@ public class PayrollService {
 
     /**
      * Count employee Entries
+     *
      * @param fileIo
      * @return
      */
@@ -101,24 +110,23 @@ public class PayrollService {
 
     public List<PayrollData> readEmployeePayrollData(IOService ioService) throws PayrollException {
         if (ioService.equals(IOService.DB_IO))
-            this.employeePayrollList = databaseConnection.readData();
+            this.employeePayrollList = databaseConnection.readDate();
         return employeePayrollList;
     }
 
-    public void updateEmployeeSalary(String name, double salary) throws PayrollException{
+    public void updateEmployeeSalary(String name, double salary) throws PayrollException {
         int result = databaseConnection.updateEmployeeData(name, salary);
         if (result == 0)
             return;
         PayrollData payrollData = this.getEmployeePayrollData(name);
-        if(payrollData != null)
+        if (payrollData != null)
             payrollData.salary = salary;
     }
 
     private PayrollData getEmployeePayrollData(String name) {
         PayrollData employeePayrollData;
         employeePayrollData = this.employeePayrollList.stream()
-                .filter(employeePayrollDataItem -> employeePayrollDataItem.name.equals(name))
-                .findFirst().orElse(null);
+                .filter(employeePayrollDataItem -> employeePayrollDataItem.name.equals(name)).findFirst().orElse(null);
         return employeePayrollData;
     }
 
@@ -126,4 +134,42 @@ public class PayrollService {
         List<PayrollData> employeePayrollDataList = databaseConnection.getEmployeePayrollData(name);
         return employeePayrollDataList.get(0).equals(getEmployeePayrollData(name));
     }
+
+    public List<PayrollData> readEmployeePayrollForDateRange(IOService ioService, LocalDate startDate,
+                                                             LocalDate endDate) throws PayrollException {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getEmployeeForDateRange(startDate, endDate);
+        return null;
+    }
+
+    public Map<String, Double> readAverageSalaryByGender(IOService ioService) throws PayrollException {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getAverageSalaryByGender();
+        return null;
+    }
+
+    public Map<String, Double> readCountByGender(IOService ioService) throws PayrollException {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getCountByGender();
+        return null;
+    }
+
+    public Map<String, Double> readMinumumSalaryByGender(IOService ioService) {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getMinimumByGender();
+        return null;
+    }
+
+    public Map<String, Double> readMaximumSalaryByGender(IOService ioService) {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getMaximumByGender();
+        return null;
+    }
+
+    public Map<String, Double> readSumSalaryByGender(IOService ioService) {
+        if (ioService.equals(IOService.DB_IO))
+            return databaseConnection.getSalarySumByGender();
+        return null;
+    }
+
 }
