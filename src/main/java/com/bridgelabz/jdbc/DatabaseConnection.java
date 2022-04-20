@@ -34,7 +34,15 @@ public class DatabaseConnection {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
+ DatabaseFunction
         String url = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";
+
+
+        String url = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";;
+
+        String url = "jdbc:mysql://localhost:3306/employeepayroll?useSSL=false";";
+
+master
         String uname = "root";
         String pass = "Resh@308";
 
