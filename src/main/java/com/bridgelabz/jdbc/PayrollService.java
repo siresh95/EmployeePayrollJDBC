@@ -3,11 +3,20 @@ package com.bridgelabz.jdbc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * 1.Create database connection using JDBC
+ * 2.Retrieve Data from database
+ * 3.Update employee salary in databse
+ * @author Asus
+ *
+ */
 public class PayrollService {
     public enum IOService {
         CONSOLE_IO, FILE_IO, DB_IO, REST_IO
     }
 
+    private DatabaseConnection databaseConnection;
     /*
      * Welcome Message
      */
@@ -25,6 +34,7 @@ public class PayrollService {
     }
 
     public PayrollService() {
+        databaseConnection = DatabaseConnection.getInstance();
     }
 
     public static void main(String[] args) {
@@ -81,7 +91,30 @@ public class PayrollService {
 
     public List<PayrollData> readEmployeePayrollData(IOService ioService) throws PayrollException {
         if (ioService.equals(IOService.DB_IO))
-            this.employeePayrollList = new DatabaseConnection().readData();
+            this.employeePayrollList = databaseConnection.readData();
         return employeePayrollList;
+    }
+
+    public void updateEmployeeSalary(String name, double salary) throws PayrollException{
+        int result = databaseConnection.updateEmployeeData(name, salary);
+        if (result == 0)
+            return;
+        PayrollData payrollData = this.getEmployeePayrollData(name);
+        if(payrollData != null)
+            payrollData.salary = salary;
+    }
+
+    private PayrollData getEmployeePayrollData(String name) {
+        PayrollData employeePayrollData;
+        employeePayrollData = this.employeePayrollList.stream()
+                .filter(employeePayrollDataItem -> employeePayrollDataItem.name.equals(name))
+                .findFirst()
+                .orElse(null);
+        return employeePayrollData;
+    }
+
+    public boolean checkEmployeePayrollInSyncWithDB(String name) {
+        List<PayrollData> employeePayrollDataList = databaseConnection.getEmployeePayrollData(name);
+        return employeePayrollDataList.get(0).equals(getEmployeePayrollData(name));
     }
 }
