@@ -1,5 +1,6 @@
 package com.bridgelabz.jdbc;
 
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -37,7 +38,7 @@ public class PayrollData {
         return Objects.hash(start, id, name, salary);
     }
 
-
+    @Override
     public boolean equals(Object obj) {
         if(this == obj)
             return true;

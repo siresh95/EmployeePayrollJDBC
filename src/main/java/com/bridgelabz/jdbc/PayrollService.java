@@ -1,5 +1,6 @@
 package com.bridgelabz.jdbc;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -76,6 +77,11 @@ public class PayrollService {
 
     }
 
+    /**
+     * Count employee Entries
+     * @param fileIo
+     * @return
+     */
     public long countEntries(IOService fileIo) {
         if (fileIo.equals(IOService.FILE_IO)) {
             return new PayrollFileIO().countEntries();

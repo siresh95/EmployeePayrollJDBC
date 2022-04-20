@@ -118,14 +118,14 @@ public class DatabaseConnection {
     }
 
     /**
-     * Update Employee data
+     * Update Employee data using prepared statement
      * @param name - name of employee
      * @param salary - salary of employee
      * @return - salary
      * @throws PayrollException
      */
     public int updateEmployeeData(String name, double salary) throws PayrollException {
-        return this.updateEmployeeDataUsingStatement(name, salary);
+        return this.updateEmployeeDataUsingPreparedStatement(name, salary);
     }
 
     /**
@@ -144,6 +144,26 @@ public class DatabaseConnection {
         }catch (SQLException ex) {
             throw new PayrollException(ex.getMessage(), PayrollException.ExceptionType.UPDATE_PROBLEM);
         }
+    }
+
+    /**
+     * update employee using PreparedStatement
+     * @param name - name of employee
+     * @param salary - salary of employee
+     * @return
+     */
+    public int updateEmployeeDataUsingPreparedStatement(String name, double salary) {
+        try (Connection connection = this.getConnection();) {
+            String sql = "update employee_payroll set salary=? where name=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, salary);
+            preparedStatement.setString(2, name);
+            int status = preparedStatement.executeUpdate();
+            return status;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
 

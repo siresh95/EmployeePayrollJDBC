@@ -13,6 +13,7 @@ public class PayrollFileIO {
 
     /**
      * Method to write data to file
+     *
      * @param employeePayrollList
      */
     public void writeData(List<PayrollData> employeePayrollList) {
@@ -39,6 +40,7 @@ public class PayrollFileIO {
             ex.printStackTrace();
         }
     }
+
     /**
      * Count the entries
      *
@@ -68,6 +70,5 @@ public class PayrollFileIO {
             ex.printStackTrace();
         }
         return employeePayrollList;
-
     }
 }
