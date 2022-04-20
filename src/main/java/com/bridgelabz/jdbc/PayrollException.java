@@ -1,6 +1,7 @@
 package com.bridgelabz.jdbc;
 
 
+
 @SuppressWarnings("serial")
 public class PayrollException extends Exception{
     enum ExceptionType {
